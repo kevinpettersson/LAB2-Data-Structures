@@ -51,7 +51,7 @@ public class Lab2 {
 					if(buy_pq.getHeap().get(i).equals(tmp)){
 						Bid newBid = new Bid(name, newBuyPrice);
 						buy_pq.getHeap().set(i,newBid);
-						buy_pq.siftUp(i);
+						//buy_pq.siftUp(i);
 						break;
 					}
 				}
@@ -65,7 +65,7 @@ public class Lab2 {
 					if(sell_pq.getHeap().get(i).equals(tmp)){
 						Bid newBid = new Bid(name, newSellPrice);
 						sell_pq.getHeap().set(i,newBid);
-						sell_pq.siftDown(i);
+						//sell_pq.siftDown(i);
 						break;
 					}
 				}
