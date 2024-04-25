@@ -9,8 +9,8 @@ public class Lab2 {
 
 	public static String pureMain(String[] commands) {
 		// TODO: declaration of two priority queue
-		PriorityQueue<Bid> buy_pq  = new PriorityQueue<Bid>(new MaxHeapComparator());
-		PriorityQueue<Bid> sell_pq = new PriorityQueue<Bid>(new MinHeapComparator());
+		PriorityQueue<Bid> buy_pq  = new PriorityQueue<Bid>(new MinHeapComparator());
+		PriorityQueue<Bid> sell_pq = new PriorityQueue<Bid>(new MaxHeapComparator());
 		
 
 		StringBuilder sb = new StringBuilder();
@@ -41,6 +41,7 @@ public class Lab2 {
 			} else if(action.equals("S")) {
 				// TODO: add new sell bid
 				sell_pq.add(new Bid(name, price));
+				sell_pq.siftUp(sell_pq.size()-1);
 
 			} else if(action.equals("NK")){
 				// TODO: update existing buy bid. use parts[3].
@@ -65,7 +66,6 @@ public class Lab2 {
 					if(sell_pq.getHeap().get(i).equals(tmp)){
 						Bid newBid = new Bid(name, newSellPrice);
 						sell_pq.getHeap().set(i,newBid);
-						//sell_pq.siftDown(i);
 						break;
 					}
 				}
@@ -104,26 +104,26 @@ public class Lab2 {
 		sb.append("Sellers: ");
 		// TODO: print remaining sellers.
 		// can remove from priority queue until it is empty.
-		while(sell_pq.size() > 0){
+		while(sell_pq.size() > 1){
 			sb.append(sell_pq.minimum().toString());
+			sb.append(", ");
 			sell_pq.deleteMinimum();
 		}
 
-		sb.append("Buyers: ");
+		sb.append("\n: ");
 		// TODO: print remaining buyers
 		// can remove from priority queue until it is empty.
 		while(buy_pq.size() > 0){
 			sb.append(buy_pq.minimum().toString());
 			buy_pq.deleteMinimum();
 		}
-
 		return sb.toString();
 	}
 
 	// Method prints out when a purchase is complete.
 	public static String print(String buyer, String seller, int price){
 
-		return buyer + " buys a share from " + seller + " for " + price;
+		return buyer + " köper från " + seller + " för " + price + " kr";
 	}
 
 	public static void main(String[] args) throws IOException {

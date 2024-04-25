@@ -19,12 +19,18 @@ public class PriorityQueue<E> {
 	}
      
 	// Adds an item to the priority queue.
-	public void add(E x)
-	{	
+	public void add(E x) {
 		heap.add(x);
 		int index = heap.size()-1;
 		// To maintain the heap property.
 		siftUp(index);
+	}
+
+	public void swap(int i, int j){
+		E tmp = heap.get(i);
+		E tmp2 = heap.get(j);
+		heap.set(j, tmp);
+		heap.set(i, tmp2);
 	}
 
 	// Returns the smallest item in the priority queue.
@@ -39,12 +45,14 @@ public class PriorityQueue<E> {
 	// Removes the smallest item in the priority queue.
 	// Throws NoSuchElementException if empty.
 	public void deleteMinimum() {
-		if (size() == 0)
+		if (size() == 0){
 			throw new NoSuchElementException();
-
+		}
 		heap.set(0, heap.get(heap.size()-1));
 		heap.remove(heap.size()-1);
-		if (heap.size() > 0) siftDown(0);
+		if (heap.size() > 0) {
+			siftDown(0);
+		}
 	}
 
 	// Sifts a node up.
@@ -53,11 +61,14 @@ public class PriorityQueue<E> {
 	public void siftUp(int index) {
 		E value = heap.get(index);
 
-		while(parent(index) > 0){
+		while(index > 0){
 			int parentIndex = parent(index);
 			E parentValue   = heap.get(parentIndex);
 
-			if(comparator.compare(value, parentValue) <= 0){
+			if(comparator.compare(value, parentValue) < 0){
+				swap(index, parentIndex);
+				index = parentIndex;
+
 				heap.set(index, parentValue);
 				index = parentIndex;
 			} else {
@@ -66,7 +77,8 @@ public class PriorityQueue<E> {
 		}
 		heap.set(index, value);
 	}
-     
+
+	 */
 	// Sifts a node down.
 	// siftDown(index) fixes the invariant if the element at 'index' may
 	// be greater than its children, but all other elements are correct.
@@ -92,7 +104,6 @@ public class PriorityQueue<E> {
 					childValue = rightValue;
 				}
 			}
-
 			// If the child is smaller than the parent,
 			// carry on downwards.
 			if (comparator.compare(value, childValue) > 0) {
@@ -100,7 +111,6 @@ public class PriorityQueue<E> {
 				index = child;
 			} else break;
 		}
-
 		heap.set(index, value);
 	}
 
