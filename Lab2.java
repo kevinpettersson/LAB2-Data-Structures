@@ -73,7 +73,7 @@ public class Lab2 {
 					if(sell_pq.getHeap().get(i).equals(tmp)){
 						Bid newBid = new Bid(name, newSellPrice);
 						sell_pq.getHeap().set(i,newBid);
-
+						sell_pq.getHash().put(i,newBid);
 						//See line 54.
 						if(price > newSellPrice){
 							sell_pq.siftUp(i);
@@ -114,9 +114,11 @@ public class Lab2 {
 				buy_pq.deleteMinimum();	
 			}
 		}
-
-		sb.append("Order book: ");
-
+		/*The following 25 lines of code formats the outputs to our liking
+		the while loops checks each queue and prints the .minimum() element
+		along with a ", " as long as the queue is larger than 0. The if clause stops
+		an additional comma at the very last element, so that the output looks crips and clean*/
+		sb.append("Orderbok: ");
 		sb.append("\nSäljare: ");
 		// TODO: print remaining sellers.
 		// can remove from priority queue until it is empty.
@@ -141,7 +143,7 @@ public class Lab2 {
 		return sb.toString();
 	}
 
-	// Method prints out when a purchase is complete.
+	// Method prints out when a purchase is complete. Not much more to add here.
 	public static void print(String buyer, String seller, int price){
 		System.out.println(buyer + " köper från " + seller + " för " + price + " kr");
 	}

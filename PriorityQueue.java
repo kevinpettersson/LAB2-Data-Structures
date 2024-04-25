@@ -134,13 +134,21 @@ PriorityQueue<E> {
 	// Sifts a node up.
 	// siftUp(index) fixes the invariant if the element at 'index' may
 	// be less than its parent, but all other elements are correct.
+
+	/* As long as the size of the heap is larger than 0, siftUp compares the value
+	at the specifed index with its parent. If the parent is larger they will swap with
+	the helper function "swap" and update the index so the while loop may continue until the break command.
+	Worth noting is that the indexes that are being compared updates with each run through the loop at line 118
+	which eliminates the need for temporary elements.*/
+
+	/*
 	public void siftUp(int index){
 
 		while(index > 0){
 			if (comparator.compare(hash.get(index), hash.get(parent(index))) < 0){
 				swap(index, parent(index));
 				index = (index-1)/2;
-				//hash.put(index, heap.get(index));
+
 			} else break;
 		}
 		heap.set(index, heap.get(index));
