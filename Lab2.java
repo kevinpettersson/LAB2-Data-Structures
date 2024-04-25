@@ -8,16 +8,15 @@ import java.util.List;
 public class Lab2 {
 
 	public static String pureMain(String[] commands) {
-		// TODO: declaration of two priority queue
-		PriorityQueue<Bid> buy_pq  = new PriorityQueue<Bid>(new MinHeapComparator());
-		PriorityQueue<Bid> sell_pq = new PriorityQueue<Bid>(new MaxHeapComparator());
+		PriorityQueue<Bid> buy_pq  = new PriorityQueue<>(new MinHeapComparator());
+		PriorityQueue<Bid> sell_pq = new PriorityQueue<>(new MaxHeapComparator());
 		
 
 		StringBuilder sb = new StringBuilder();
 
 		for(int line_no=0;line_no<commands.length;line_no++){
 			String line = commands[line_no];
-			if( line.equals("") )continue;
+			if(line.isEmpty())continue;
 
 			String[] parts = line.split("\\s+");
 			if( parts.length != 3 && parts.length != 4)
@@ -35,25 +34,26 @@ public class Lab2 {
 			}
 
 			if(action.equals("K")) {
-				// TODO: add new buy bid
+				//Add a new bid to the buy queue
 				buy_pq.add(new Bid(name, price));
 
 			} else if(action.equals("S")) {
-				// TODO: add new sell bid
+				//Add a new bid to the sell queue
 				sell_pq.add(new Bid(name, price));
 
 			} else if(action.equals("NK")){
-				// TODO: update existing buy bid. use parts[3].
+				//The dominant factor in this operation is the for-loop,
+				//in worst case it will run n times which makes the operation O(n)
 				int newBuyPrice = Integer.parseInt(parts[3]);
 				Bid tmp = new Bid(name, price);
-				
+
 				for (int i = 0; i < buy_pq.size(); i++) {
 					if(buy_pq.getHeap().get(i).equals(tmp)){
 						Bid newBid = new Bid(name, newBuyPrice);
 						buy_pq.getHeap().set(i,newBid);
 						buy_pq.getHash().put(i, newBid);
 						//The following lines compares the new and old price, and sifts them up or down,
-						//depending on their size, to keep the heap property. Makes the operation O(1)*O(n)
+						//depending on their size, to keep the heap property.
 						if(price > newBuyPrice) {
 							buy_pq.siftDown(i);
 						}
@@ -65,16 +65,16 @@ public class Lab2 {
 				}
 
 			} else if(action.equals("NS")){
-				// TODO: update existing sell bid. use parts[3].
+				//See line 45
 				int newSellPrice = Integer.parseInt(parts[3]);
 				Bid tmp = new Bid(name, price);
-				
+
 				for (int i = 0; i < sell_pq.size(); i++) {
 					if(sell_pq.getHeap().get(i).equals(tmp)){
 						Bid newBid = new Bid(name, newSellPrice);
 						sell_pq.getHeap().set(i,newBid);
 						sell_pq.getHash().put(i,newBid);
-						//See line 54.
+						//See line 55.
 						if(price > newSellPrice){
 							sell_pq.siftUp(i);
 						}
@@ -93,17 +93,9 @@ public class Lab2 {
 			if(sell_pq.size() == 0 || buy_pq.size() == 0){
 				continue;
 			}
-			
-			// TODO:
-			// compare the bids of highest priority from each of
-			// each priority queues.
-			// if the lowest seller price is lower than or equal to
-			// the highest buyer price, then remove one bid from
-			// each priority queue and add a description of the
-			// transaction to the output.
 
 			//Compares prices from both queues, if the loop finds a setting that satisfies the
-			//requirements for a sale, it will print the sale and remove the prices from the queues
+			//requirements for a sale, it will print the sale and remove the bids from the two queues
 			while(buy_pq.size() > 0 && sell_pq.size() > 0 && buy_pq.minimum().getPrice() >= sell_pq.minimum().getPrice()){
 
 				String buyer  = buy_pq.minimum().getName();
@@ -115,13 +107,12 @@ public class Lab2 {
 			}
 		}
 		/*The following 25 lines of code formats the outputs to our liking
-		the while loops checks each queue and prints the .minimum() element
-		along with a ", " as long as the queue is larger than 0. The if clause stops
-		an additional comma at the very last element, so that the output looks crips and clean*/
+		the while loops checks each queue and prints the minimum() element
+		along with a ", " as long as the queue is larger than 0. The if-clause stops
+		an additional comma at the very last element, so that the output looks crisp and clean*/
 		sb.append("Orderbok: ");
 		sb.append("\nSäljare: ");
-		// TODO: print remaining sellers.
-		// can remove from priority queue until it is empty.
+		// Will remove bids from priority queues until it is empty.
 		while(sell_pq.size() > 0){
 			sb.append(sell_pq.minimum().toString());
 			if (sell_pq.size() > 0) {
@@ -131,8 +122,7 @@ public class Lab2 {
 		}
 
 		sb.append("\nKöpare: ");
-		// TODO: print remaining buyers
-		// can remove from priority queue until it is empty.
+		// See line 115.
 		while(buy_pq.size() > 0){
 			sb.append(buy_pq.minimum().toString());
 			if (buy_pq.size() > 0){
@@ -140,10 +130,13 @@ public class Lab2 {
 			}
 			buy_pq.deleteMinimum();
 		}
+		//Returns the concatenated strings of remaining bids.
 		return sb.toString();
 	}
 
-	// Method prints out when a purchase is complete. Not much more to add here.
+	// Method takes a buyer and seller name, and a price as parameters
+	// Called when a purchase is complete.
+	// O(1)
 	public static void print(String buyer, String seller, int price){
 		System.out.println(buyer + " köper från " + seller + " för " + price + " kr");
 	}
@@ -157,7 +150,7 @@ public class Lab2 {
 			actions = new BufferedReader(new FileReader(args[0]));
 		}
 
-		List<String> lines = new LinkedList<String>();
+		List<String> lines = new LinkedList<>();
 		while(true){
 			String line = actions.readLine();
 			if( line == null)break;
