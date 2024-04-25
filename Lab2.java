@@ -51,6 +51,7 @@ public class Lab2 {
 					if(buy_pq.getHeap().get(i).equals(tmp)){
 						Bid newBid = new Bid(name, newBuyPrice);
 						buy_pq.getHeap().set(i,newBid);
+						buy_pq.getHash().put(i, newBid);
 						//The following lines compares the new and old price, and sifts them up or down,
 						//depending on their size, to keep the heap property. Makes the operation O(1)*O(n)
 						if(price > newBuyPrice) {
