@@ -25,11 +25,15 @@ PriorityQueue<E> {
 		int index = heap.size()-1;
 		// To maintain the heap property.
 		siftUp(index);
+		hash.put(index, x);
 	}
 
 	public void swap(int i, int j){
 		E tmp = heap.get(i);
 		E tmp2 = heap.get(j);
+		//E tmp3 = hash.get(i);
+		//E tmp4 = hash.get(j);
+
 		heap.set(j, tmp);
 		heap.set(i, tmp2);
 	}
@@ -56,32 +60,6 @@ PriorityQueue<E> {
 		}
 	}
 
-	// Sifts a node up.
-	// siftUp(index) fixes the invariant if the element at 'index' may
-	// be less than its parent, but all other elements are correct.
-	/*
-	public void siftUp(int index) {
-		E value = heap.get(index);
-
-		while(index > 0){
-			int parentIndex = parent(index);
-			E parentValue   = heap.get(parentIndex);
-
-			if(comparator.compare(value, parentValue) < 0){
-				swap(index, parentIndex);
-				index = parentIndex;
-
-				heap.set(index, parentValue);
-				index = parentIndex;
-
-			} else {
-				break;
-			}
-		}
-		heap.set(index, value);
-	}
-
-	 */
 	// Sifts a node down.
 	// siftDown(index) fixes the invariant if the element at 'index' may
 	// be greater than its children, but all other elements are correct.
@@ -117,12 +95,16 @@ PriorityQueue<E> {
 		heap.set(index, value);
 	}
 
+	// Sifts a node up.
+	// siftUp(index) fixes the invariant if the element at 'index' may
+	// be less than its parent, but all other elements are correct.
 	public void siftUp(int index){
 
 		while(index > 0){
 			if (comparator.compare(heap.get(index), heap.get(parent(index))) < 0){
 				swap(index, parent(index));
 				index = (index-1)/2;
+				//hash.put(index, heap.get(index));
 			} else break;
 		}
 	}
