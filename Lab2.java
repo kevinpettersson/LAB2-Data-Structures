@@ -41,7 +41,6 @@ public class Lab2 {
 			} else if(action.equals("S")) {
 				// TODO: add new sell bid
 				sell_pq.add(new Bid(name, price));
-				sell_pq.siftUp(sell_pq.size()-1);
 
 			} else if(action.equals("NK")){
 				// TODO: update existing buy bid. use parts[3].
@@ -52,7 +51,14 @@ public class Lab2 {
 					if(buy_pq.getHeap().get(i).equals(tmp)){
 						Bid newBid = new Bid(name, newBuyPrice);
 						buy_pq.getHeap().set(i,newBid);
-						//buy_pq.siftUp(i);
+						//The following lines compares the new and old price, and sifts them up or down,
+						//depending on their size, to keep the heap property. Makes the operation O(1)*O(n)
+						if(price > newBuyPrice) {
+							buy_pq.siftDown(i);
+						}
+						else{
+							buy_pq.siftUp(i);
+						}
 						break;
 					}
 				}
@@ -66,6 +72,14 @@ public class Lab2 {
 					if(sell_pq.getHeap().get(i).equals(tmp)){
 						Bid newBid = new Bid(name, newSellPrice);
 						sell_pq.getHeap().set(i,newBid);
+
+						//See line 54.
+						if(price > newSellPrice){
+							sell_pq.siftUp(i);
+						}
+						else {
+							sell_pq.siftDown(i);
+						}
 						break;
 					}
 				}
@@ -87,13 +101,14 @@ public class Lab2 {
 			// each priority queue and add a description of the
 			// transaction to the output.
 
+			//Compares prices from both queues, if the loop finds a setting that satisfies the
+			//requirements for a sale, it will print the sale and remove the prices from the queues
 			while(buy_pq.size() > 0 && sell_pq.size() > 0 && buy_pq.minimum().getPrice() >= sell_pq.minimum().getPrice()){
 
 				String buyer  = buy_pq.minimum().getName();
 				String seller = sell_pq.minimum().getName();
 				int sellPrice = sell_pq.minimum().getPrice();
-				print(buyer, seller, price);
-
+				print(buyer, seller, sellPrice);
 				sell_pq.deleteMinimum();
 				buy_pq.deleteMinimum();	
 			}
@@ -104,36 +119,35 @@ public class Lab2 {
 		sb.append("\nSäljare: ");
 		// TODO: print remaining sellers.
 		// can remove from priority queue until it is empty.
-		while(sell_pq.size() > 1){
+		while(sell_pq.size() > 0){
 			sb.append(sell_pq.minimum().toString());
-			sb.append(", ");
+			if (sell_pq.size() > 0) {
+				sb.append(", ");
+			}
 			sell_pq.deleteMinimum();
 		}
-		if (sell_pq.size() == 1){
-			sb.append(sell_pq.minimum().toString());
-			sell_pq.deleteMinimum();
-		}
 
-
-
-		sb.append("\n: ");
+		sb.append("\nKöpare: ");
 		// TODO: print remaining buyers
 		// can remove from priority queue until it is empty.
 		while(buy_pq.size() > 0){
 			sb.append(buy_pq.minimum().toString());
+			if (buy_pq.size() > 0){
+				sb.append(", ");
+			}
 			buy_pq.deleteMinimum();
 		}
 		return sb.toString();
 	}
 
 	// Method prints out when a purchase is complete.
-	public static String print(String buyer, String seller, int price){
-
-		return buyer + " köper från " + seller + " för " + price + " kr";
+	public static void print(String buyer, String seller, int price){
+		System.out.println(buyer + " köper från " + seller + " för " + price + " kr");
 	}
 
 	public static void main(String[] args) throws IOException {
 		final BufferedReader actions;
+
 		if( args.length != 1 ){
 			actions = new BufferedReader(new InputStreamReader(System.in));
 		} else {
@@ -147,7 +161,6 @@ public class Lab2 {
 			lines.add(line);
 		}
 		actions.close();
-
 		System.out.println(pureMain(lines.toArray(new String[lines.size()])));
 	}
 }

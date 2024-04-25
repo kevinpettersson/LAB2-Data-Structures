@@ -4,6 +4,7 @@ import java.util.*;
 public class
 PriorityQueue<E> {
 	private ArrayList<E> heap = new ArrayList<E>();
+	private HashMap<Integer, E> hash= new HashMap<>();
 	private Comparator<E> comparator;
 
 	public PriorityQueue(Comparator<E> comparator) {
