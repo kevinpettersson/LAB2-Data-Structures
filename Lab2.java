@@ -99,9 +99,9 @@ public class Lab2 {
 			}
 		}
 
-		sb.append("Order book:\n");
+		sb.append("Order book: ");
 
-		sb.append("Sellers: ");
+		sb.append("\nSäljare: ");
 		// TODO: print remaining sellers.
 		// can remove from priority queue until it is empty.
 		while(sell_pq.size() > 1){
@@ -109,6 +109,12 @@ public class Lab2 {
 			sb.append(", ");
 			sell_pq.deleteMinimum();
 		}
+		if (sell_pq.size() == 1){
+			sb.append(sell_pq.minimum().toString());
+			sell_pq.deleteMinimum();
+		}
+
+
 
 		sb.append("\n: ");
 		// TODO: print remaining buyers

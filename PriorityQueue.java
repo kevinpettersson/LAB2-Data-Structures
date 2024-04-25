@@ -1,7 +1,8 @@
 import java.util.*;
 
 // A priority queue.
-public class PriorityQueue<E> {
+public class
+PriorityQueue<E> {
 	private ArrayList<E> heap = new ArrayList<E>();
 	private Comparator<E> comparator;
 
@@ -58,6 +59,7 @@ public class PriorityQueue<E> {
 	// Sifts a node up.
 	// siftUp(index) fixes the invariant if the element at 'index' may
 	// be less than its parent, but all other elements are correct.
+	/*
 	public void siftUp(int index) {
 		E value = heap.get(index);
 
@@ -71,6 +73,7 @@ public class PriorityQueue<E> {
 
 				heap.set(index, parentValue);
 				index = parentIndex;
+
 			} else {
 				break;
 			}
@@ -112,6 +115,16 @@ public class PriorityQueue<E> {
 			} else break;
 		}
 		heap.set(index, value);
+	}
+
+	public void siftUp(int index){
+
+		while(index > 0){
+			if (comparator.compare(heap.get(index), heap.get(parent(index))) < 0){
+				swap(index, parent(index));
+				index = (index-1)/2;
+			} else break;
+		}
 	}
 
 	// Helper functions for calculating the children and parent of an index.
