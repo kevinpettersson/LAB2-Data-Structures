@@ -10,7 +10,6 @@ public class Lab2 {
 	public static String pureMain(String[] commands) {
 		PriorityQueue<Bid> buy_pq  = new PriorityQueue<>(new MinHeapComparator());
 		PriorityQueue<Bid> sell_pq = new PriorityQueue<>(new MaxHeapComparator());
-		
 
 		StringBuilder sb = new StringBuilder();
 
@@ -50,12 +49,8 @@ public class Lab2 {
 				for (int i = 0; i < buy_pq.size(); i++) {
 					if(buy_pq.getHeap().get(i).equals(tmp)){
 						Bid newBid = new Bid(name, newBuyPrice);
-						buy_pq.getHeap().set(i,newBid);
-						buy_pq.getHash().put(i, newBid);
-						//The following line compares the new and old price, and sifts them up or down,
-						//depending on their size, to keep the heap property.
-						// By using a update method we can keep siftDown and SiftUp methods private.
-						buy_pq.update(newBuyPrice, price, i);
+						//We call the update method on the old and new bid and do a swap.
+						buy_pq.update(buy_pq.getHeap().get(i), newBid);
 						break;
 					}
 				}
@@ -68,10 +63,8 @@ public class Lab2 {
 				for (int i = 0; i < sell_pq.size(); i++) {
 					if(sell_pq.getHeap().get(i).equals(tmp)){
 						Bid newBid = new Bid(name, newSellPrice);
-						sell_pq.getHeap().set(i,newBid);
-						sell_pq.getHash().put(i,newBid);
-						//See line 55.
-						sell_pq.update(price, newSellPrice, i);
+						//See line 53.
+						sell_pq.update(sell_pq.getHeap().get(i), newBid);
 						break;
 					}
 				}

@@ -16,16 +16,32 @@ PriorityQueue<E> {
 		this.hash       = new HashMap<>();
 		this.comparator = comparator;
 	}
-	//Complexity O(log n)
-	public void update(int oldBidPrice, int newBidPrice, int index){
 
-		if(oldBidPrice > newBidPrice) {
-			this.siftUp(index);
+	// Complexity O(log n)
+	//Method searches for the index in the heap and then does a replacement of the old bid with the new.
+	//after that checks if the parent value is lesser or greater and then does either a sift up or down.
+	//Returns an exception if the element does not exist.
+	public void update(E oldObject, E newObject){
+		int index = -1;
+		for (int i = 0; i < size(); i++) {
+			if(heap.get(i).equals(oldObject)){
+				index = i;
+				break;
+			}
 		}
-		else{
-			this.siftDown(index);
+		if(index == -1){
+			throw new NoSuchElementException("Element dosent exist.");
 		}
 
+		heap.set(index, newObject);
+		hash.replace(index, oldObject, newObject);
+
+		int parentIndex = parent(index);
+		if(parentIndex >= 0 && comparator.compare(newObject, heap.get(parentIndex)) < 0){
+			siftUp(index);
+		} else{
+			siftDown(index);
+		}
 	}
 
 	// Returns the size of the priority queue.
