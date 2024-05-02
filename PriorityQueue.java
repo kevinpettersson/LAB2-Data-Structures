@@ -16,6 +16,16 @@ PriorityQueue<E> {
 		this.hash       = new HashMap<>();
 		this.comparator = comparator;
 	}
+	public void update(int oldBidPrice, int newBidPrice, int index){
+
+		if(oldBidPrice > newBidPrice) {
+			this.siftUp(index);
+		}
+		else{
+			this.siftDown(index);
+		}
+
+	}
 
 	// Returns the size of the priority queue.
 	// Complexity: O(1)
@@ -87,7 +97,7 @@ PriorityQueue<E> {
 	// siftDown(index) fixes the invariant if the element at 'index' may
 	// be greater than its children, but all other elements are correct.
 	// Complexity: O(log n)
-	public void siftDown(int index) {
+	private void siftDown(int index) {
 		// Stop when the node is a leaf.
 		while (leftChild(index) < heap.size()) {
 			int left    = leftChild(index);
@@ -123,7 +133,7 @@ PriorityQueue<E> {
 	Worth noting is that the indexes that are being compared updates with each run through the loop at line 118
 	which eliminates the need for temporary elements.
 	Complexity: O(log n)																					*/
-	public void siftUp(int index){
+	private void siftUp(int index){
 
 		while(index > 0){
 			// Will swap indices with parent as long as the current parent value is less.

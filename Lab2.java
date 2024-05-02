@@ -54,12 +54,7 @@ public class Lab2 {
 						buy_pq.getHash().put(i, newBid);
 						//The following lines compares the new and old price, and sifts them up or down,
 						//depending on their size, to keep the heap property.
-						if(price > newBuyPrice) {
-							buy_pq.siftDown(i);
-						}
-						else{
-							buy_pq.siftUp(i);
-						}
+						buy_pq.update(newBuyPrice, price, i);
 						break;
 					}
 				}
@@ -75,12 +70,7 @@ public class Lab2 {
 						sell_pq.getHeap().set(i,newBid);
 						sell_pq.getHash().put(i,newBid);
 						//See line 55.
-						if(price > newSellPrice){
-							sell_pq.siftUp(i);
-						}
-						else {
-							sell_pq.siftDown(i);
-						}
+						sell_pq.update(price, newSellPrice, i);
 						break;
 					}
 				}
