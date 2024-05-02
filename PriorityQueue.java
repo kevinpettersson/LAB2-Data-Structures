@@ -16,6 +16,7 @@ PriorityQueue<E> {
 		this.hash       = new HashMap<>();
 		this.comparator = comparator;
 	}
+	//Complexity O(log n)
 	public void update(int oldBidPrice, int newBidPrice, int index){
 
 		if(oldBidPrice > newBidPrice) {

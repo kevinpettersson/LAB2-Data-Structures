@@ -52,8 +52,9 @@ public class Lab2 {
 						Bid newBid = new Bid(name, newBuyPrice);
 						buy_pq.getHeap().set(i,newBid);
 						buy_pq.getHash().put(i, newBid);
-						//The following lines compares the new and old price, and sifts them up or down,
+						//The following line compares the new and old price, and sifts them up or down,
 						//depending on their size, to keep the heap property.
+						// By using a update method we can keep siftDown and SiftUp methods private.
 						buy_pq.update(newBuyPrice, price, i);
 						break;
 					}
