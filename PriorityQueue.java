@@ -74,6 +74,11 @@ PriorityQueue<E> {
 		hash.put(i, tmp2);
 	}
 
+	//Complexity O(1)
+	public boolean isEmpty(){
+		return (this.size() == 0);
+	}
+
 	/*
 	Method take no parameters and returns the root element in the priority queue.
 	Throws NoSuchElementException if empty.
@@ -167,16 +172,6 @@ PriorityQueue<E> {
 		E value = heap.get(index);
 		//Finally stores the key and element in hashmap where it ended up.
 		hash.put(heap.indexOf(value), value);
-	}
-
-	// GETTERS
-	// Complexity: O(1)
-	public HashMap<Integer, E> getHash(){
-		return this.hash;
-	}
-
-	public ArrayList<E> getHeap(){
-		return this.heap;
 	}
 
 	// Helper functions for calculating the children and parent of an index.

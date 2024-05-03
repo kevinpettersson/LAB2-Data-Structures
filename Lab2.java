@@ -41,46 +41,27 @@ public class Lab2 {
 				sell_pq.add(new Bid(name, price));
 
 			} else if(action.equals("NK")){
-				//The dominant factor in this operation is the for-loop,
-				//in worst case it will run n times which makes the operation O(n)
+				//The dominant factor in this operation is the update method call on the pq.
+				//The dominant factor inside the update method is the for-loop that got complexity O(n)
 				int newBuyPrice = Integer.parseInt(parts[3]);
-				Bid tmp = new Bid(name, price);
-
-				for (int i = 0; i < buy_pq.size(); i++) {
-					if(buy_pq.getHeap().get(i).equals(tmp)){
-						Bid newBid = new Bid(name, newBuyPrice);
-						//We call the update method on the old and new bid and do a swap.
-						buy_pq.update(buy_pq.getHeap().get(i), newBid);
-						break;
-					}
-				}
-
+				buy_pq.update(new Bid(name, price), new Bid(name, newBuyPrice));
 			} else if(action.equals("NS")){
-				//See line 45
+				//See line 44
 				int newSellPrice = Integer.parseInt(parts[3]);
-				Bid tmp = new Bid(name, price);
-
-				for (int i = 0; i < sell_pq.size(); i++) {
-					if(sell_pq.getHeap().get(i).equals(tmp)){
-						Bid newBid = new Bid(name, newSellPrice);
-						//See line 53.
-						sell_pq.update(sell_pq.getHeap().get(i), newBid);
-						break;
-					}
-				}
+				sell_pq.update(new Bid(name, price), new Bid(name, newSellPrice));
 			} else {
 
 				throw new RuntimeException(
 						"line " + line_no + ": invalid action");
 			}
 
-			if(sell_pq.size() == 0 || buy_pq.size() == 0){
+			if(sell_pq.isEmpty() || buy_pq.isEmpty()){
 				continue;
 			}
 
 			//Compares prices from both queues, if the loop finds a setting that satisfies the
 			//requirements for a sale, it will print the sale and remove the bids from the two queues
-			while(buy_pq.size() > 0 && sell_pq.size() > 0 && buy_pq.minimum().getPrice() >= sell_pq.minimum().getPrice()){
+			while(!buy_pq.isEmpty() && !sell_pq.isEmpty() && buy_pq.minimum().getPrice() >= sell_pq.minimum().getPrice()){
 
 				String buyer  = buy_pq.minimum().getName();
 				String seller = sell_pq.minimum().getName();
@@ -97,9 +78,9 @@ public class Lab2 {
 		sb.append("Orderbok: ");
 		sb.append("\nSäljare: ");
 		// Will remove bids from priority queues until it is empty.
-		while(sell_pq.size() > 0){
+		while(!sell_pq.isEmpty()){
 			sb.append(sell_pq.minimum().toString());
-			if (sell_pq.size() > 0) {
+			if (!sell_pq.isEmpty()) {
 				sb.append(", ");
 			}
 			sell_pq.deleteMinimum();
@@ -107,9 +88,9 @@ public class Lab2 {
 
 		sb.append("\nKöpare: ");
 		// See line 115.
-		while(buy_pq.size() > 0){
+		while(!buy_pq.isEmpty()){
 			sb.append(buy_pq.minimum().toString());
-			if (buy_pq.size() > 0){
+			if (!buy_pq.isEmpty()){
 				sb.append(", ");
 			}
 			buy_pq.deleteMinimum();
